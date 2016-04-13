@@ -10,14 +10,15 @@
 
 
     <RelativeLayout
+        android:id="@+id/content_detail"
+        android:layout_below="@+id/toolbar_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="20dp"
-        android:layout_below="@+id/toolbar_detail"
-        android:id="@+id/relativeLayout">
+        >
 
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/map"
@@ -28,32 +29,67 @@
             android:layout_centerHorizontal="true"/>
 
         <RelativeLayout
+            android:id="@+id/photos_title"
+            android:layout_below="@+id/map"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/map"
             android:layout_marginTop="10dp">
 
             <TextView
+                android:id="@+id/Gallery_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Gallery"
-                android:id="@+id/Gallery_text"
                 android:layout_alignParentLeft="true"
                 android:paddingLeft="10dp"
                 android:textStyle="bold"
                  />
 
             <Switch
+                android:id="@+id/switch1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New Switch"
-                android:id="@+id/switch1"
+                android:text="Activated"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true" />
 
         </RelativeLayout>
+
+        <include
+            android:id="@id/diary_photos"
+            layout="@layout/photos_detail"
+            android:layout_below="@id/photos_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"></include>
+
+        <TextView
+            android:id="@+id/diary_title"
+            android:layout_below="@id/diary_photos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Diary"
+            android:layout_alignParentLeft="true"
+            android:paddingLeft="10dp"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            ></TextView>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_below="@id/diary_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:maxLines = "10"
+            android:scrollbars = "vertical"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/diary_background"/>
     </RelativeLayout>
+
+
 
 
 </RelativeLayout>

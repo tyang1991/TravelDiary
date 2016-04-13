@@ -5,7 +5,7 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/list_item_diary_title_text_view"
+        android:id="@+id/list_item_diary_title"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,19 +17,19 @@
         android:paddingLeft="10dp"/>
 
     <TextView
-        android:id="@+id/list_item_diary_date_text_view"
+        android:id="@+id/list_item_diary_date"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/list_item_diary_title_text_view"
+        android:layout_below="@id/list_item_diary_title"
         tools:text="Diary Date"
         android:padding="4dp"
         android:layout_centerHorizontal="true"/>
 
     <ImageView
+        android:id="@+id/list_item_detail_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageView"
         android:src="@drawable/ic_main_detail"
         android:paddingRight="10dp"
         android:layout_alignParentEnd="true"
