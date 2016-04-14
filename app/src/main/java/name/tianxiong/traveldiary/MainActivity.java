@@ -6,14 +6,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.TextView;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private Window window;
-    private RecyclerView diaryRecyclerView;
+    private RecyclerView mDiaryRecyclerView;
+    private DiaryAdapter mAdapter;
 
 
     @Override
@@ -24,8 +31,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
         //set recycler view
-        diaryRecyclerView = (RecyclerView) findViewById(R.id.diary_list_recycler_view);
-        diaryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mDiaryRecyclerView = (RecyclerView) findViewById(R.id.diary_list_recycler_view);
+        mDiaryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //update UI
+        updateUI();
     }
 
     @Override
@@ -53,4 +62,47 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void updateUI(){
+        DiaryManager diaryManager = DiaryManager.get();
+        List<Diary> diaries = diaryManager.getDiaries();
+
+        mAdapter = new DiaryAdapter(diaries);
+        mDiaryRecyclerView.setAdapter(mAdapter);
+    }
+
+    private class DiaryHolder extends RecyclerView.ViewHolder {
+        public TextView diaryTitle;
+        public TextView diaryDate;
+
+        public DiaryHolder (View itemView){
+            super(itemView);
+
+            diaryTitle = (TextView) itemView.findViewById(R.id.list_item_diary_title);
+            diaryDate = (TextView) itemView.findViewById(R.id.list_item_diary_date);
+        }
+    }
+
+    private class DiaryAdapter extends RecyclerView.Adapter<DiaryHolder> {
+        private List<Diary> mDiaries;
+
+        public DiaryAdapter(List<Diary> diaries){
+            mDiaries = diaries;
+        }
+
+        public DiaryHolder onCreateViewHolder(ViewGroup parent, int viewType){
+            LayoutInflater layoutInflater = LayoutInflater.from(getApplicationContext());
+            View view = layoutInflater.inflate(R.layout.list_item_main, parent, false);
+            return new DiaryHolder(view);
+        }
+
+        public void onBindViewHolder(DiaryHolder holder, int position){
+            Diary diary = mDiaries.get(position);
+            holder.diaryTitle.setText(diary.getTitle());
+            holder.diaryDate.setText(diary.getStartTime().toString());
+        }
+
+        public int getItemCount(){
+            return mDiaries.size();
+        }
+    }
 }
