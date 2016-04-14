@@ -3,6 +3,8 @@ package name.tianxiong.traveldiary;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,15 +12,20 @@ import android.view.Window;
 
 public class MainActivity extends AppCompatActivity {
 
-    Window window;
+    private Window window;
+    private RecyclerView diaryRecyclerView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        //set toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
+        //set recycler view
+        diaryRecyclerView = (RecyclerView) findViewById(R.id.diary_list_recycler_view);
+        diaryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override

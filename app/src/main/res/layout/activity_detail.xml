@@ -57,7 +57,7 @@
         </RelativeLayout>
 
         <include
-            android:id="@id/diary_photos"
+            android:id="@+id/diary_photos"
             layout="@layout/photos_detail"
             android:layout_below="@id/photos_title"
             android:layout_width="match_parent"
