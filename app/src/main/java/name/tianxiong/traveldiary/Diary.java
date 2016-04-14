@@ -11,7 +11,7 @@ public class Diary {
     private Date startTime;
     private Date endTime;
     private boolean diaryState;//activated or stopped
-    private String diary;
+    private String diaryContent;
     private UUID id;
     //initiate diary
     public Diary(){
@@ -19,11 +19,13 @@ public class Diary {
         diaryState = true;
         id = UUID.randomUUID();
     }
+
     //set end time and state as stopped
     public void endDiary(){
         endTime = new Date();
         diaryState = false;
     }
+
     //get date
     public Date getEndTime() {
         return endTime;
@@ -31,22 +33,35 @@ public class Diary {
     public Date getStartTime() {
         return startTime;
     }
+
     //diary setter and getter
-    public String getDiary() {
-        return diary.toString();
+    public String getDiaryContent() {
+        if (diaryContent != null) return diaryContent.toString();
+        else return "";
     }
-    public void setDiary(String diary) {
-        this.diary = diary;
+    public void setDiaryContent(String diary) {
+        this.diaryContent = diary;
     }
+
     //title setter and getter
     public String getTitle() {
-        return title;
+        if (title != null) return title;
+        else return "";
     }
     public void setTitle(String title) {
         this.title = title;
     }
+
     //get id
     public UUID getId(){
         return id;
+    }
+
+    //state setter and getter
+    public boolean getDiaryState() {
+        return diaryState;
+    }
+    public void setDiaryState(boolean diaryState) {
+        this.diaryState = diaryState;
     }
 }

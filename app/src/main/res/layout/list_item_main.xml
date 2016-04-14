@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:textColor="#000000">
+    android:textColor="#000000"
+    android:background="@drawable/optionscreen_bottomrectangle"
+    android:clickable="true">
 
     <TextView
         android:id="@+id/list_item_diary_title"

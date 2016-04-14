@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">TravelDiary</string>
     <string name="title_activity_main">TravelDiary</string>
+    <string name="title_activity_diary_detial">Diary</string>
 </resources>

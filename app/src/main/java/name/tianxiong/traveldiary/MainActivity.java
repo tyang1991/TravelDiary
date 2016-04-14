@@ -1,11 +1,13 @@
 package name.tianxiong.traveldiary;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -61,27 +64,57 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
+    //update UI every time list of diaries is changed
     private void updateUI(){
         DiaryManager diaryManager = DiaryManager.get();
         List<Diary> diaries = diaryManager.getDiaries();
 
-        mAdapter = new DiaryAdapter(diaries);
-        mDiaryRecyclerView.setAdapter(mAdapter);
+        if (mAdapter == null){
+            mAdapter = new DiaryAdapter(diaries);
+            mDiaryRecyclerView.setAdapter(mAdapter);
+        }else{
+            mAdapter.setDiaries(diaries);
+            mAdapter.notifyDataSetChanged();
+        }
     }
-
-    private class DiaryHolder extends RecyclerView.ViewHolder {
-        public TextView diaryTitle;
-        public TextView diaryDate;
+    //Diary holder holds the view of each item of diary
+    //this class communicates with main activity through DiaryAdapter
+    private class DiaryHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        private TextView diaryTitle;
+        private TextView diaryDate;
+        private Diary diary;
 
         public DiaryHolder (View itemView){
             super(itemView);
-
             diaryTitle = (TextView) itemView.findViewById(R.id.list_item_diary_title);
             diaryDate = (TextView) itemView.findViewById(R.id.list_item_diary_date);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getApplicationContext(),"clicked", Toast.LENGTH_SHORT).show();
+                    Intent intent = DiaryDetialActivity.newIntent(getApplicationContext(), diary.getId());
+                    startActivity(intent);
+                }
+            });
+        }
+        //bind data shown with diary data
+        public void bindDiary(Diary diary){
+            this.diary = diary;
+            diaryTitle.setText(diary.getTitle());
+            diaryDate.setText(diary.getStartTime().toString());
+            Log.d("Diary", "Diary binded");
+        }
+        //open a new intent of this diary when clicked
+        public void onClick(View v){
+            Intent intent = DiaryDetialActivity.newIntent(getApplicationContext(), diary.getId());
+            startActivity(intent);
+            Log.d("Diary", "Item Clicked");
+            Toast.makeText(getApplicationContext(),"clicked", Toast.LENGTH_SHORT).show();
         }
     }
-
+    //Diary adapter is used to fill diary items into recycler view
+    //first getItemCount() is called, then onCreateViewHolder and onBindViewHolder are
+    //called for each item
     private class DiaryAdapter extends RecyclerView.Adapter<DiaryHolder> {
         private List<Diary> mDiaries;
 
@@ -97,12 +130,15 @@ public class MainActivity extends AppCompatActivity {
 
         public void onBindViewHolder(DiaryHolder holder, int position){
             Diary diary = mDiaries.get(position);
-            holder.diaryTitle.setText(diary.getTitle());
-            holder.diaryDate.setText(diary.getStartTime().toString());
+            holder.bindDiary(diary);
         }
 
         public int getItemCount(){
             return mDiaries.size();
+        }
+
+        public void setDiaries(List<Diary> diaries){
+            mDiaries = diaries;
         }
     }
 }

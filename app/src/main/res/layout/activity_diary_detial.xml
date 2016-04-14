@@ -44,10 +44,10 @@
                 android:layout_alignParentLeft="true"
                 android:paddingLeft="10dp"
                 android:textStyle="bold"
-                 />
+                />
 
             <Switch
-                android:id="@+id/switch1"
+                android:id="@+id/diary_state"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Activated"
@@ -65,7 +65,7 @@
             android:layout_marginTop="5dp"></include>
 
         <TextView
-            android:id="@+id/diary_title"
+            android:id="@+id/diary"
             android:layout_below="@id/diary_photos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -78,8 +78,8 @@
             ></TextView>
 
         <TextView
-            android:id="@+id/textView"
-            android:layout_below="@id/diary_title"
+            android:id="@+id/diary_content"
+            android:layout_below="@id/diary"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
@@ -88,8 +88,4 @@
             android:layout_marginTop="5dp"
             android:background="@drawable/diary_background"/>
     </RelativeLayout>
-
-
-
-
 </RelativeLayout>
