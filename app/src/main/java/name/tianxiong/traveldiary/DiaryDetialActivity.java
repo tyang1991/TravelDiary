@@ -35,6 +35,8 @@ public class DiaryDetialActivity extends AppCompatActivity {
         //set toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_detail);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_back);
         //get UUID in Bundle
         UUID diaryId = (UUID) getIntent().getSerializableExtra(EXTRA_DIARY_ID);
         //get diary
@@ -65,7 +67,7 @@ public class DiaryDetialActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
-            case R.id.menu_item_title:
+           case R.id.menu_item_title:
                 return true;
             case R.id.menu_item_post:
                 return true;
