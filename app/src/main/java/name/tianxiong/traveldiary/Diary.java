@@ -15,8 +15,10 @@ public class Diary {
     private UUID id;
     //initiate diary
     public Diary(){
+        title = "newTitle";
         startTime = new Date();
-        diaryState = true;
+        diaryState = false;
+        diaryContent = "";
         id = UUID.randomUUID();
     }
 
@@ -36,8 +38,7 @@ public class Diary {
 
     //diary setter and getter
     public String getDiaryContent() {
-        if (diaryContent != null) return diaryContent.toString();
-        else return "";
+        return diaryContent.toString();
     }
     public void setDiaryContent(String diary) {
         this.diaryContent = diary;
@@ -45,8 +46,7 @@ public class Diary {
 
     //title setter and getter
     public String getTitle() {
-        if (title != null) return title;
-        else return "";
+        return title;
     }
     public void setTitle(String title) {
         this.title = title;

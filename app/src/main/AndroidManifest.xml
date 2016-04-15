@@ -37,7 +37,8 @@
             android:name=".DiaryDetialActivity"
             android:label="@string/title_activity_diary_detial"
             android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".MainActivity"></activity>
+            android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="adjustPan" ></activity>
     </application>
 
 </manifest>

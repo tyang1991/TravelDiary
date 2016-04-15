@@ -6,15 +6,8 @@
     tools:context=".DetailActivity">
 
     <item
-        android:id="@+id/menu_item_title"
-        android:orderInCategory="100"
-        android:title="Post"
-        app:showAsAction="always"></item>
-
-    <item
         android:id="@+id/menu_item_post"
         android:orderInCategory="300"
         android:title="Post"
         app:showAsAction="always"></item>
-
 </menu>

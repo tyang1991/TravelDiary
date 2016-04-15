@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -79,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     }
     //Diary holder holds the view of each item of diary
     //this class communicates with main activity through DiaryAdapter
-    private class DiaryHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    private class DiaryHolder extends RecyclerView.ViewHolder{
         private TextView diaryTitle;
         private TextView diaryDate;
         private Diary diary;
@@ -91,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getApplicationContext(),"clicked", Toast.LENGTH_SHORT).show();
                     Intent intent = DiaryDetialActivity.newIntent(getApplicationContext(), diary.getId());
                     startActivity(intent);
                 }
@@ -103,13 +101,6 @@ public class MainActivity extends AppCompatActivity {
             diaryTitle.setText(diary.getTitle());
             diaryDate.setText(diary.getStartTime().toString());
             Log.d("Diary", "Diary binded");
-        }
-        //open a new intent of this diary when clicked
-        public void onClick(View v){
-            Intent intent = DiaryDetialActivity.newIntent(getApplicationContext(), diary.getId());
-            startActivity(intent);
-            Log.d("Diary", "Item Clicked");
-            Toast.makeText(getApplicationContext(),"clicked", Toast.LENGTH_SHORT).show();
         }
     }
     //Diary adapter is used to fill diary items into recycler view

@@ -64,28 +64,52 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"></include>
 
-        <TextView
-            android:id="@+id/diary"
-            android:layout_below="@id/diary_photos"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Diary"
-            android:layout_alignParentLeft="true"
-            android:paddingLeft="10dp"
-            android:textStyle="bold"
-            android:layout_marginTop="10dp"
-            ></TextView>
+        <RelativeLayout
+            android:id="@+id/diary_title_bar"
+            android:layout_below="@+id/diary_photos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <TextView
+            <TextView
+                android:id="@+id/diary_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Diary"
+                android:layout_alignParentLeft="true"
+                android:paddingLeft="10dp"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:layout_centerVertical="true"
+                ></TextView>
+
+            <EditText
+                android:id="@+id/diary_title"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:hint="Enter Title Here"
+                android:background="@drawable/diary_background"
+                android:textColor="#000000"
+                android:singleLine="true"
+                android:lines="1"/>
+
+
+        </RelativeLayout>
+
+        <EditText
             android:id="@+id/diary_content"
-            android:layout_below="@id/diary"
+            android:layout_below="@id/diary_title_bar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
-            android:maxLines = "10"
-            android:scrollbars = "vertical"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/diary_background"/>
+            android:inputType="textMultiLine"
+            android:gravity="top|left"
+            android:scrollbars="vertical"
+            android:hint="Enter Content Here"
+            android:background="@drawable/diary_background"
+            android:textColor="#000000"/>
+
     </RelativeLayout>
 </RelativeLayout>
