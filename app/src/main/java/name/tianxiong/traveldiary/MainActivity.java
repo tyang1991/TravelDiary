@@ -40,6 +40,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -56,6 +62,10 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
             case R.id.menu_item_new_diary:
+                Diary newDiary = new Diary();
+                DiaryManager.get().addDiary(newDiary);
+                Intent intent = DiaryDetialActivity.newIntent(getApplicationContext(), newDiary.getId());
+                startActivity(intent);
                 return true;
             case R.id.menu_item_login:
                 return true;

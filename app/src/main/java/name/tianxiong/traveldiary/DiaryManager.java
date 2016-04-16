@@ -27,6 +27,10 @@ public class DiaryManager {
             mDiaries.add(diary);
         }
     }
+    //add diary
+    public void addDiary(Diary diary){
+        mDiaries.add(diary);
+    }
     //return all diaries
     public List<Diary> getDiaries(){
         return mDiaries;
