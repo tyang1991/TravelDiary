@@ -16,9 +16,16 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import java.util.UUID;
 
-public class DiaryDetialActivity extends AppCompatActivity {
+public class DiaryDetialActivity extends AppCompatActivity implements OnMapReadyCallback {
     private Window window;
     private static final String EXTRA_DIARY_ID = "extraCrimeId";
     private Diary diary;
@@ -27,6 +34,7 @@ public class DiaryDetialActivity extends AppCompatActivity {
     private Switch diaryState;
     private EditText diaryContent;
     private ActionBar actionBar;
+    private GoogleMap mMap;
 
     public static Intent newIntent(Context packageContext, UUID crimeId) {
         Intent intent = new Intent(packageContext, DiaryDetialActivity.class);
@@ -63,6 +71,20 @@ public class DiaryDetialActivity extends AppCompatActivity {
                 }
             }
         });
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        // Add a marker in Sydney and move the camera
+        LatLng sydney = new LatLng(-34, 151);
+        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 
     private void updateUI(){
