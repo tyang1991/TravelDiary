@@ -6,6 +6,12 @@
     tools:context=".DetailActivity">
 
     <item
+        android:id="@+id/menu_item_save"
+        android:orderInCategory="100"
+        android:title="Save"
+        app:showAsAction="always"></item>
+
+    <item
         android:id="@+id/menu_item_post"
         android:orderInCategory="300"
         android:title="Post"

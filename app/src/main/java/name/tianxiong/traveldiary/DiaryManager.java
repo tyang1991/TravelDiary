@@ -20,12 +20,6 @@ public class DiaryManager {
     //initiate Diary Manager and fetch data
     private DiaryManager(){
         mDiaries = new ArrayList<>();
-        //generate fake diaries
-        for (int i=0; i<20; i++){
-            Diary diary = new Diary();
-            diary.setTitle("Diary #"+i);
-            mDiaries.add(diary);
-        }
     }
     //add diary
     public void addDiary(Diary diary){

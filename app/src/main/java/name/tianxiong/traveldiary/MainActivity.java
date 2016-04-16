@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.menu_item_new_diary:
                 Diary newDiary = new Diary();
+                newDiary.setDiaryState(true);
                 DiaryManager.get().addDiary(newDiary);
                 Intent intent = DiaryDetialActivity.newIntent(getApplicationContext(), newDiary.getId());
                 startActivity(intent);

@@ -7,6 +7,8 @@ import java.util.UUID;
  * Created by Tianxiong on 4/13/2016.
  */
 public class Diary {
+    public static String DIARY_STATE_ACTIVETED = "Activated";
+    public static String DIARY_STATE_STOPPED = "Stopped";
     private String title;
     private Date startTime;
     private Date endTime;

@@ -11,8 +11,10 @@ import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import java.util.UUID;
 
@@ -49,13 +51,27 @@ public class DiaryDetialActivity extends AppCompatActivity {
         diaryTitle = (EditText) findViewById(R.id.diary_title);
         //init data
         updateUI();
+        //set view listener
+        diaryState.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                diary.setDiaryState(isChecked);
+                if (isChecked) {
+                    diaryState.setText(Diary.DIARY_STATE_ACTIVETED);
+                } else {
+                    diaryState.setText(Diary.DIARY_STATE_STOPPED);
+                }
+            }
+        });
     }
 
     private void updateUI(){
         //set state
         diaryState.setChecked(diary.getDiaryState());
+        diaryState.setText(diary.getDiaryState()?
+                Diary.DIARY_STATE_ACTIVETED:Diary.DIARY_STATE_STOPPED);
         //set title
-        diaryTitle.setText(diary.getTitle());
+        diaryTitle.setText(diary.getTitle()=="newTitle"?"":diary.getTitle());
         //set content
         diaryContent.setText(diary.getDiaryContent());
         diaryContent.setCursorVisible(true);
@@ -88,6 +104,10 @@ public class DiaryDetialActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
+            case R.id.menu_item_save:
+                updateDiary();
+                Toast.makeText(this,"Diary Saved", Toast.LENGTH_SHORT).show();
+                return true;
             case R.id.menu_item_post:
                 return true;
             default:
@@ -95,5 +115,8 @@ public class DiaryDetialActivity extends AppCompatActivity {
         }
     }
 
-
+    private void updateDiary(){
+        diary.setTitle(diaryTitle.getText().toString());
+        diary.setDiaryContent(diaryContent.getText().toString());
+    }
 }
