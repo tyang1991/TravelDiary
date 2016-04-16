@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -90,12 +91,14 @@ public class MainActivity extends AppCompatActivity {
     //Diary holder holds the view of each item of diary
     //this class communicates with main activity through DiaryAdapter
     private class DiaryHolder extends RecyclerView.ViewHolder{
+        private RelativeLayout viewItem;
         private TextView diaryTitle;
         private TextView diaryDate;
         private Diary diary;
 
         public DiaryHolder (View itemView){
             super(itemView);
+            viewItem = (RelativeLayout) itemView;
             diaryTitle = (TextView) itemView.findViewById(R.id.list_item_diary_title);
             diaryDate = (TextView) itemView.findViewById(R.id.list_item_diary_date);
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -111,6 +114,8 @@ public class MainActivity extends AppCompatActivity {
             this.diary = diary;
             diaryTitle.setText(diary.getTitle());
             diaryDate.setText(diary.getStartTime().toString());
+            if (diary.getDiaryState())
+                viewItem.setBackgroundResource(R.drawable.item_background_activated);
             Log.d("Diary", "Diary binded");
         }
     }

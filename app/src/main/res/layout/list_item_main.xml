@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:textColor="#000000"
-    android:background="@drawable/optionscreen_bottomrectangle"
+    android:background="@drawable/item_background_stopped"
     android:clickable="true">
 
     <TextView
