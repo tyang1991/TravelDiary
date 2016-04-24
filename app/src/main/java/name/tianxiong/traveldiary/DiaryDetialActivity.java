@@ -1,5 +1,6 @@
 package name.tianxiong.traveldiary;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -35,6 +36,7 @@ public class DiaryDetialActivity extends AppCompatActivity implements OnMapReady
     private EditText diaryContent;
     private ActionBar actionBar;
     private GoogleMap mMap;
+    //private CameraEventReceiver camera;
 
     public static Intent newIntent(Context packageContext, UUID crimeId) {
         Intent intent = new Intent(packageContext, DiaryDetialActivity.class);
@@ -75,6 +77,10 @@ public class DiaryDetialActivity extends AppCompatActivity implements OnMapReady
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        //camera
+        //camera = new CameraEventReceiver();
+        Intent photoService = PhotoService.newIntent(this);
+        startService(photoService);
     }
 
     @Override
@@ -140,5 +146,15 @@ public class DiaryDetialActivity extends AppCompatActivity implements OnMapReady
     private void updateDiary(){
         diary.setTitle(diaryTitle.getText().toString());
         diary.setDiaryContent(diaryContent.getText().toString());
+    }
+
+    public class CameraEventReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            Toast.makeText(context, "New Photo Clicked", Toast.LENGTH_LONG).show();
+
+        }
     }
 }
