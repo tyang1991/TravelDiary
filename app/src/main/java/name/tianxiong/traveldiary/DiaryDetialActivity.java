@@ -79,8 +79,9 @@ public class DiaryDetialActivity extends AppCompatActivity implements OnMapReady
         mapFragment.getMapAsync(this);
         //camera
         //camera = new CameraEventReceiver();
-        Intent photoService = PhotoService.newIntent(this);
-        startService(photoService);
+        //Intent photoService = PhotoService.newIntent(this);
+        //startService(photoService);
+        PhotoService.setServiceAlarm(this, true);
     }
 
     @Override
