@@ -114,6 +114,7 @@ public class DiaryDetialActivity extends AppCompatActivity
             // Get extra data included in the Intent
             String message = intent.getStringExtra("Command");
             Log.d("AlarmService", "Got message: " + message);
+            updateLocation();
         }
     };
 
@@ -123,7 +124,7 @@ public class DiaryDetialActivity extends AppCompatActivity
     }
 
     protected void onStop() {
-        mGoogleApiClient.disconnect();
+        //mGoogleApiClient.disconnect();
         super.onStop();
     }
 
@@ -136,20 +137,23 @@ public class DiaryDetialActivity extends AppCompatActivity
 
     @Override
     public void onConnected(Bundle connectionHint) {
+        updateLocation();
+    }
+
+    private void updateLocation(){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED){
             //get location
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                     mGoogleApiClient);
-        }
-        if (mLastLocation != null) {
-            Toast.makeText(this, mLastLocation.toString(), Toast.LENGTH_SHORT).show();
-            Log.i("LocationCheck", mLastLocation.toString());
-        }else {
-            Toast.makeText(this, "Check Failed", Toast.LENGTH_SHORT).show();
+            if (mLastLocation == null){
+                Log.i("LocationCheck", "null pointer");
+            }else{
+                Log.i("LocationCheck", mLastLocation.toString());
+            }
+        }else{
             Log.i("LocationCheck", "Check Failed");
         }
-
     }
 
     public void onConnectionSuspended(int cause) {
