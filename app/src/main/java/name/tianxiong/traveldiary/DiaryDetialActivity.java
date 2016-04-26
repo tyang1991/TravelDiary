@@ -24,7 +24,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
@@ -37,8 +36,7 @@ import java.util.UUID;
 public class DiaryDetialActivity extends AppCompatActivity
         implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,
-        LocationListener{
+        GoogleApiClient.OnConnectionFailedListener{
     private Window window;
     private static final String EXTRA_DIARY_ID = "extraCrimeId";
     private Diary diary;
@@ -121,10 +119,6 @@ public class DiaryDetialActivity extends AppCompatActivity
             //get location
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                     mGoogleApiClient);
-            //set location update request
-            createLocationRequest();
-            LocationServices.FusedLocationApi.requestLocationUpdates(
-                    mGoogleApiClient, mLocationRequest, this);
         }
         if (mLastLocation != null) {
             Toast.makeText(this, mLastLocation.toString(), Toast.LENGTH_SHORT).show();
@@ -144,26 +138,6 @@ public class DiaryDetialActivity extends AppCompatActivity
     public void onConnectionFailed(ConnectionResult result) {
         // TODO Auto-generated method stub
     }
-
-    @Override
-    public void onLocationChanged(Location location){
-        mLastLocation = location;
-        if (mLastLocation != null) {
-            Toast.makeText(this, mLastLocation.toString(), Toast.LENGTH_SHORT).show();
-            Log.i("LocationCheck", mLastLocation.toString());
-        }else {
-            Toast.makeText(this, "Check Failed", Toast.LENGTH_SHORT).show();
-            Log.i("LocationCheck", "Check Failed");
-        }
-    }
-
-    protected void createLocationRequest() {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(10000);
-        mLocationRequest.setFastestInterval(5000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-    }
-
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
