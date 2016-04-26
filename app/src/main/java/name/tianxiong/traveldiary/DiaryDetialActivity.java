@@ -6,12 +6,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -20,6 +22,11 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -27,7 +34,11 @@ import com.google.android.gms.maps.UiSettings;
 
 import java.util.UUID;
 
-public class DiaryDetialActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class DiaryDetialActivity extends AppCompatActivity
+        implements OnMapReadyCallback,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        LocationListener{
     private Window window;
     private static final String EXTRA_DIARY_ID = "extraCrimeId";
     private Diary diary;
@@ -38,6 +49,9 @@ public class DiaryDetialActivity extends AppCompatActivity implements OnMapReady
     private ActionBar actionBar;
     private GoogleMap mMap;
     private UiSettings mUiSettings;
+    private GoogleApiClient mGoogleApiClient ;
+    private LocationRequest mLocationRequest;
+    private Location mLastLocation;
 
     public static Intent newIntent(Context packageContext, UUID crimeId) {
         Intent intent = new Intent(packageContext, DiaryDetialActivity.class);
@@ -79,8 +93,77 @@ public class DiaryDetialActivity extends AppCompatActivity implements OnMapReady
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         //set up service
-        PhotoService.setServiceAlarm(this, true);
+        //AlarmService.setServiceAlarm(this, true);
+        // Create an instance of GoogleAPIClient.
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
     }
+
+    protected void onStart() {
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
+    @Override
+    public void onConnected(Bundle connectionHint) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED){
+            //get location
+            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                    mGoogleApiClient);
+            //set location update request
+            createLocationRequest();
+            LocationServices.FusedLocationApi.requestLocationUpdates(
+                    mGoogleApiClient, mLocationRequest, this);
+        }
+        if (mLastLocation != null) {
+            Toast.makeText(this, mLastLocation.toString(), Toast.LENGTH_SHORT).show();
+            Log.i("LocationCheck", mLastLocation.toString());
+        }else {
+            Toast.makeText(this, "Check Failed", Toast.LENGTH_SHORT).show();
+            Log.i("LocationCheck", "Check Failed");
+        }
+
+    }
+
+    public void onConnectionSuspended(int cause) {
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult result) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void onLocationChanged(Location location){
+        mLastLocation = location;
+        if (mLastLocation != null) {
+            Toast.makeText(this, mLastLocation.toString(), Toast.LENGTH_SHORT).show();
+            Log.i("LocationCheck", mLastLocation.toString());
+        }else {
+            Toast.makeText(this, "Check Failed", Toast.LENGTH_SHORT).show();
+            Log.i("LocationCheck", "Check Failed");
+        }
+    }
+
+    protected void createLocationRequest() {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(10000);
+        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {

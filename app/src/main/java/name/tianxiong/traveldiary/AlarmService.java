@@ -10,29 +10,29 @@ import android.util.Log;
 import android.widget.Toast;
 
 /**
- * Created by Tianxiong on 4/24/2016.
+ * Created by Tianxiong on 4/26/2016.
  */
-public class PhotoService extends IntentService {
-    private static final String TAG = "PollService";
+public class AlarmService extends IntentService {
+    private static final String TAG = "AlarmService";
     private static final int Alarm_INTERVAL = 1000 * 10; // 60 seconds
     private static int i = 0;
 
     public static Intent newIntent(Context context) {
-        return new Intent(context, PhotoService.class);
+        return new Intent(context, AlarmService.class);
     }
 
-    public PhotoService() {
+    public AlarmService() {
         super(TAG);
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Toast.makeText(getApplicationContext(), "Service Started"+i++, Toast.LENGTH_SHORT).show();
-        Log.i(TAG, "Received an intent: " + i++ +" " + intent);
+        Toast.makeText(getApplicationContext(), "Service Started" + i++, Toast.LENGTH_SHORT).show();
+        Log.i(TAG, "Received an intent: " + i++ + " " + intent);
     }
 
     public static void setServiceAlarm(Context context, boolean isOn) {
-        Intent i = PhotoService.newIntent(context);
+        Intent i = AlarmService.newIntent(context);
         PendingIntent pi = PendingIntent.getService(context, 0, i, 0);
 
         AlarmManager alarmManager = (AlarmManager)
