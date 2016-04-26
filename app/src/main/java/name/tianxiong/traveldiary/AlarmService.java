@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -29,6 +30,15 @@ public class AlarmService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         Toast.makeText(getApplicationContext(), "Service Started" + i++, Toast.LENGTH_SHORT).show();
         Log.i(TAG, "Received an intent: " + i++ + " " + intent);
+        wakeUpDetailActivity();
+    }
+
+    private void wakeUpDetailActivity(){
+        Log.d(TAG, "Broadcasting message");
+        Intent intent = new Intent("DiaryDetailActivity");
+        // You can also include some extra data.
+        intent.putExtra("Command", "Record Location");
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
     public static void setServiceAlarm(Context context, boolean isOn) {
