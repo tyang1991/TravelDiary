@@ -8,14 +8,13 @@ import android.content.Intent;
 import android.os.SystemClock;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.widget.Toast;
 
 /**
  * Created by Tianxiong on 4/26/2016.
  */
 public class AlarmService extends IntentService {
     private static final String TAG = "AlarmService";
-    private static final int Alarm_INTERVAL = 1000 * 10; // 60 seconds
+    private static final int Alarm_INTERVAL = 1000 * 5; // 60 seconds
     private static int i = 0;
 
     public static Intent newIntent(Context context) {
@@ -28,7 +27,6 @@ public class AlarmService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Toast.makeText(getApplicationContext(), "Service Started" + i++, Toast.LENGTH_SHORT).show();
         Log.i(TAG, "Received an intent: " + i++ + " " + intent);
         wakeUpDetailActivity();
     }

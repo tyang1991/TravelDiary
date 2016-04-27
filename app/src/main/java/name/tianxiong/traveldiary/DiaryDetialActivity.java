@@ -28,10 +28,15 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.UUID;
 
@@ -40,7 +45,7 @@ public class DiaryDetialActivity extends AppCompatActivity
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener{
     private Window window;
-    private static final String EXTRA_DIARY_ID = "extraCrimeId";
+    private static final String EXTRA_DIARY_ID = "extraDiaryId";
     private Diary diary;
     private Menu menu;
     private EditText diaryTitle;
@@ -52,10 +57,14 @@ public class DiaryDetialActivity extends AppCompatActivity
     private GoogleApiClient mGoogleApiClient ;
     private LocationRequest mLocationRequest;
     private Location mLastLocation;
+    private LatLng mLatLng;
+    private PolylineOptions rectOptions;
+    private Polyline polyline;
+    private int markerNumber;
 
-    public static Intent newIntent(Context packageContext, UUID crimeId) {
+    public static Intent newIntent(Context packageContext, UUID DiaryId) {
         Intent intent = new Intent(packageContext, DiaryDetialActivity.class);
-        intent.putExtra(EXTRA_DIARY_ID, crimeId);
+        intent.putExtra(EXTRA_DIARY_ID, DiaryId);
         return intent;
     }
 
@@ -104,6 +113,9 @@ public class DiaryDetialActivity extends AppCompatActivity
                     .addApi(LocationServices.API)
                     .build();
         }
+        //init poly line
+        rectOptions = new PolylineOptions();
+        markerNumber = 0;
     }
 
     // Our handler for received Intents. This will be called whenever an Intent
@@ -130,6 +142,7 @@ public class DiaryDetialActivity extends AppCompatActivity
 
     @Override
     protected void onDestroy() {
+        mGoogleApiClient.disconnect();
         // Unregister since the activity is about to be closed.
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
         super.onDestroy();
@@ -150,11 +163,20 @@ public class DiaryDetialActivity extends AppCompatActivity
                 Log.i("LocationCheck", "null pointer");
             }else{
                 Log.i("LocationCheck", mLastLocation.toString());
+                mLatLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+                diary.addLocation(mLastLocation);
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mLatLng, 14));
+                rectOptions.add(mLatLng);
+                polyline.setPoints(diary.getLatLngs());
+                updateMarker();
+
             }
         }else{
             Log.i("LocationCheck", "Check Failed");
         }
+
     }
+
 
     public void onConnectionSuspended(int cause) {
         mGoogleApiClient.connect();
@@ -168,12 +190,14 @@ public class DiaryDetialActivity extends AppCompatActivity
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mUiSettings = mMap.getUiSettings();
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED)
+                == PackageManager.PERMISSION_GRANTED){
+            mUiSettings = mMap.getUiSettings();
             mMap.setMyLocationEnabled(true);
-        mUiSettings.setMyLocationButtonEnabled(true);
-
+            polyline = mMap.addPolyline(rectOptions
+                    .color(Color.BLUE));
+            mUiSettings.setMyLocationButtonEnabled(true);
+        }
     }
 
     private void updateUI(){
@@ -182,7 +206,7 @@ public class DiaryDetialActivity extends AppCompatActivity
         diaryState.setText(diary.getDiaryState()?
                 Diary.DIARY_STATE_ACTIVETED:Diary.DIARY_STATE_STOPPED);
         //set title
-        diaryTitle.setText(diary.getTitle()=="newTitle"?"":diary.getTitle());
+        diaryTitle.setText(diary.getTitle() == "newTitle" ? "" : diary.getTitle());
         //set content
         diaryContent.setText(diary.getDiaryContent());
         diaryContent.setCursorVisible(true);
@@ -223,6 +247,17 @@ public class DiaryDetialActivity extends AppCompatActivity
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void updateMarker(){
+        int i = diary.getMarkerList().size();
+        while(markerNumber < i){
+            LatLng newL = diary.getMarkerList().get(markerNumber);
+            mMap.addMarker(new MarkerOptions().position(newL));
+            markerNumber++;
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                    diary.getMarkerList().get(diary.getMarkerList().size()-1), 14));
         }
     }
 
